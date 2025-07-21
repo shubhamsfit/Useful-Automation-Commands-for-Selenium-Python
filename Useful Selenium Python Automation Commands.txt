@@ -1,0 +1,27 @@
+pytest --capture=tee-sys (Used to capture print statement for terminal and html report both)
+python -m venv venv (Create virtual environment)
+venv\Scripts\activate (Activate virtual environment)
+
+pip install selenium
+pip install pytest
+pip install pytest-html
+pip freeze > requirements.txt (Generate reqirement.txt file)
+
+pytest tests/test_login.py (Run specific test case)
+pytest (Run all test cases)
+
+
+pytest -m frontend --html=reports/frontend/index.html --self-contained-html (run frontend or backend tests)
+
+-s (Used to print the output in terminal)
+
+
+Setting Up Allure Report With Selenium Python
+
+iwr -useb get.scoop.sh | iex
+scoop bucket add extras
+scoop install allure
+allure --version
+pip install selenium pytest allure-pytest (Install Python Requirements)
+pytest --alluredir=allure-results(Run tests and generate results)
+allure serve allure-results(Launch the Report)
