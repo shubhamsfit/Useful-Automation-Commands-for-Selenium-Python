@@ -1,22 +1,51 @@
-pytest --capture=tee-sys (Used to capture print statement for terminal and html report both)
-python -m venv venv (Create virtual environment)
-venv\Scripts\activate (Activate virtual environment)
+Steps To Create Pytest Automation Framework Basic Setup
 
+1) python -m venv venv (Create virtual environment)
+2) venv\Scripts\activate (Activate virtual environment)
+3) Install all files below 
 pip install selenium
 pip install pytest
-pip install pytest-html
 pip freeze > requirements.txt (Generate reqirement.txt file)
+4) Now create pytest.ini file basic code below.
 
-pytest tests/test_login.py (Run specific test case)
-pytest (Run all test cases)
+[pytest]
+addopts = -ra -q
+testpaths = 
+    frontend_tests
+    backend_tests
 
+markers =
+    backend: mark a test as part of the backend test suite
+    frontend: mark a test as part of the frontend test suite
 
-pytest -m frontend --html=reports/frontend/index.html --self-contained-html (run frontend or backend tests)
+5) Now create conftest.py file basic code below.
+import pytest
+from selenium import webdriver
 
--s (Used to print the output in terminal)
+@pytest.fixture
+def driver():
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless")  # Optional: Run in headless mode
+    driver = webdriver.Chrome(options=options)
+    driver.implicitly_wait(5)
+    yield driver
+    driver.quit()
 
+6) create a folder for your test cases example 'frontend_tests' inside it create your test cases example "test_case1.py".
 
-Setting Up Allure Report With Selenium Python
+7) Basic code example below to open any website in browser
+
+import time
+import pytest
+from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.common.by import By
+BASE_URL = "https://www.example.com"
+
+@pytest.mark.frontend
+def test_login(driver):
+    driver.get(f"{BASE_URL}")
+
+8) Setting Up Allure Report With Selenium Python below commands.
 
 iwr -useb get.scoop.sh | iex
 scoop bucket add extras
@@ -25,3 +54,16 @@ allure --version
 pip install selenium pytest allure-pytest (Install Python Requirements)
 pytest --alluredir=allure-results(Run tests and generate results)
 allure serve allure-results(Launch the Report)
+
+
+9) Run Test Cases Commands Commands:
+
+pytest tests/test_login.py (Run specific test case)
+
+pytest (Run all test cases)
+
+pytest -m frontend --html=reports/frontend/index.html --self-contained-html (run frontend or backend tests)
+
+-s (Used to print the output in terminal)
+
+
